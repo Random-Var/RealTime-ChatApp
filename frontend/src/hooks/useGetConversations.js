@@ -7,28 +7,24 @@ const useGetConversations = () => {
 
     useEffect(() => {
         const getConversations = async () => {
-            setLoading(false);
-            try{
-                const res = await fetch('/api/users');
+            setLoading(true);
+            try {
+                const res = await fetch("/api/users");
                 const data = await res.json();
-
-                if (data.error){
+                if (data.error) {
                     throw new Error(data.error);
                 }
                 setConversations(data);
+            } catch (error) {
+                toast.error(error.message);
+            } finally {
+                setLoading(false);
             }
-            catch (e){
-                toast.error(e.message);
-            }
-            finally{
-                setLoading(true);
-            }
-        }
+        };
 
         getConversations();
     }, []);
 
-    return {loading, conversations};
-}
-
+    return { loading, conversations };
+};
 export default useGetConversations;
